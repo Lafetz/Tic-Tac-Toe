@@ -9,8 +9,8 @@ const players = (function () {
       score: score,
     };
   };
-  let player1 = player("elias", 0);
-  let player2 = player("max", 0);
+  let player1 = player("X", 0);
+  let player2 = player("O", 0);
   return {
     player1,
     player2,
@@ -18,7 +18,7 @@ const players = (function () {
 })();
 
 let gameBoard = (function () {
-  let grids = ["", "", "", "", "", "", "", "", ""];
+  grids = new Array(9).fill("");
   let gameCount = 0;
   const gameGrid = [
     [0, 1, 2], //1
@@ -30,6 +30,7 @@ let gameBoard = (function () {
     [0, 4, 8], //7
     [2, 4, 6],
   ];
+
   let firstChoice = true; //check who started //change to player
   const displayContent = function () {
     for (let i = 0; i < 9; i++) {
@@ -41,6 +42,11 @@ let gameBoard = (function () {
     //see if grid is taken
     return grids[index] == "";
   };
+
+  const endGame = function () {
+    grids = new Array(9).fill("");
+    displayContent();
+  };
   const GameWon = function () {
     for (const combination of gameGrid) {
       const [a, b, c] = combination;
@@ -48,7 +54,11 @@ let gameBoard = (function () {
         const winner = (won) => {
           if (gameCount % 2 == 0) {
             console.log(`${players.player1.name} won`);
-          } else console.log(`${players.player2.name} won`);
+            endGame();
+          } else {
+            console.log(`${players.player2.name} won`);
+            endGame();
+          }
         };
         winner();
       }
@@ -77,7 +87,20 @@ let gameBoard = (function () {
   return {
     displayContent: displayContent,
     clickDivs: gameGrids,
+    endGame,
+  };
+})();
+let buttons = (function () {
+  const restart = function () {
+    document
+      .getElementById("restart")
+      .addEventListener("click", gameBoard.endGame);
+  };
+
+  return {
+    restart,
   };
 })();
 
 gameBoard.clickDivs();
+buttons.restart();
