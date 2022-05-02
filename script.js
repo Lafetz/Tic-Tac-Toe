@@ -1,6 +1,24 @@
-// 0 1 2  game grids
-// 3 4 5                       x=1  O=2
-// 6 7 8
+const ScoreDisplay = (function () {
+  let player1 = document.querySelector(".turn1");
+  let player2 = document.querySelector(".turn2");
+  const turn1 = function () {
+    player1.textContent = "X's turn";
+    player2.textContent = "";
+  };
+  const turn2 = function () {
+    player1.textContent = "";
+    player2.textContent = "O's turn";
+  };
+  const gameEnd = function () {
+    player1.textContent = "";
+    player2.textContent = "";
+  };
+  return {
+    xturn: turn1,
+    oturn: turn2,
+    gameEnd: gameEnd,
+  };
+})();
 
 const players = (function () {
   const player = function (name, score) {
@@ -46,6 +64,7 @@ let gameBoard = (function () {
   const endGame = function () {
     grids = new Array(9).fill("");
     displayContent();
+    ScoreDisplay.gameEnd();
   };
   const GameWon = function () {
     for (const combination of gameGrid) {
@@ -74,12 +93,14 @@ let gameBoard = (function () {
           GameWon();
           firstChoice = false;
           gameCount += 1;
+          ScoreDisplay.oturn();
         } else if (checkSpot(i)) {
           grids[i] = "O";
           displayContent();
           GameWon();
           firstChoice = true;
           gameCount += 1;
+          ScoreDisplay.xturn();
         }
       })
     );
