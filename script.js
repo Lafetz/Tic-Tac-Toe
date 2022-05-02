@@ -1,8 +1,25 @@
 // 0 1 2  game grids
 // 3 4 5                       x=1  O=2
 // 6 7 8
+
+const players = (function () {
+  const player = function (name, score) {
+    return {
+      name: name,
+      score: score,
+    };
+  };
+  let player1 = player("elias", 0);
+  let player2 = player("max", 0);
+  return {
+    player1,
+    player2,
+  };
+})();
+
 let gameBoard = (function () {
   let grids = ["", "", "", "", "", "", "", "", ""];
+  let gameCount = 0;
   const gameGrid = [
     [0, 1, 2], //1
     [3, 4, 5],
@@ -28,7 +45,12 @@ let gameBoard = (function () {
     for (const combination of gameGrid) {
       const [a, b, c] = combination;
       if (grids[a] != "" && grids[a] === grids[b] && grids[a] === grids[c]) {
-        console.log("at last");
+        const winner = (won) => {
+          if (gameCount % 2 == 0) {
+            console.log(`${players.player1.name} won`);
+          } else console.log(`${players.player2.name} won`);
+        };
+        winner();
       }
     }
   };
@@ -41,11 +63,13 @@ let gameBoard = (function () {
           displayContent();
           GameWon();
           firstChoice = false;
+          gameCount += 1;
         } else if (checkSpot(i)) {
           grids[i] = "O";
           displayContent();
           GameWon();
           firstChoice = true;
+          gameCount += 1;
         }
       })
     );
@@ -55,10 +79,5 @@ let gameBoard = (function () {
     clickDivs: gameGrids,
   };
 })();
-const players = function (player) {
-  return {
-    player: player,
-  };
-};
 
 gameBoard.clickDivs();
