@@ -96,11 +96,17 @@ let buttons = (function () {
       .getElementById("restart")
       .addEventListener("click", gameBoard.endGame);
   };
+  const start = function () {
+    document
+      .getElementById("start")
+      .addEventListener("click", gameBoard.clickDivs);
+  };
 
   return {
     restart,
+    start,
   };
 })();
 
-gameBoard.clickDivs();
+buttons.start();
 buttons.restart();
