@@ -145,7 +145,6 @@ let gameBoard = (function () {
         if (firstChoice && checkSpot(i)) {
           grids[i] = "X";
           displayContent();
-
           firstChoice = false;
           gameCount += 1;
           ScoreDisplay.oturn();
@@ -153,7 +152,6 @@ let gameBoard = (function () {
         } else if (checkSpot(i)) {
           grids[i] = "O";
           displayContent();
-
           firstChoice = true;
           gameCount += 1;
           ScoreDisplay.xturn();
