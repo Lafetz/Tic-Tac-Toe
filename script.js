@@ -1,3 +1,23 @@
+let buttons = (function () {
+  const restart = function () {
+    document.getElementById("restart").addEventListener("click", () => {
+      gameBoard.endGame();
+      ScoreDisplay.xturn();
+    });
+  };
+  const start = function () {
+    document.getElementById("start").addEventListener("click", () => {
+      gameBoard.clickDivs();
+      ScoreDisplay.xturn();
+    });
+  };
+
+  return {
+    restart,
+    start,
+  };
+})();
+
 const ScoreDisplay = (function () {
   let player1 = document.querySelector(".turn1");
 
@@ -14,11 +34,15 @@ const ScoreDisplay = (function () {
   const won = function (player) {
     player1.textContent = `${player} won`;
   };
+  const tie = function () {
+    player1.textContent = "It's a tie ";
+  };
   return {
     xturn: turn1,
     oturn: turn2,
     gameEnd: gameEnd,
     gamewinner: won,
+    tie: tie,
   };
 })();
 const disableScreen = (function () {
@@ -53,7 +77,7 @@ const players = (function () {
 })();
 
 let gameBoard = (function () {
-  grids = new Array(9).fill("");
+  grids = new Array(9).fill(null);
   let gameCount = 0;
   const gameGrid = [
     [0, 1, 2], //1
@@ -74,11 +98,11 @@ let gameBoard = (function () {
     }
   };
   const checkSpot = function (index) {
-    return grids[index] == "";
+    return grids[index] == null;
   };
 
   const endGame = function () {
-    grids = new Array(9).fill("");
+    grids = new Array(9).fill(null);
     gameCount = 0;
     firstChoice = true;
     ScoreDisplay.gameEnd();
@@ -88,7 +112,7 @@ let gameBoard = (function () {
   const GameWon = function () {
     for (const combination of gameGrid) {
       const [a, b, c] = combination;
-      if (grids[a] != "" && grids[a] === grids[b] && grids[a] === grids[c]) {
+      if (grids[a] != null && grids[a] === grids[b] && grids[a] === grids[c]) {
         const winner = () => {
           if (grids[a] == "X") {
             ScoreDisplay.gamewinner("X");
@@ -104,6 +128,14 @@ let gameBoard = (function () {
         };
         winner();
       }
+    }
+    const notNull = (x) => x != null;
+    if (grids.every(notNull)) {
+      ScoreDisplay.tie();
+      setTimeout(() => {
+        gameBoard.endGame();
+        ScoreDisplay.xturn();
+      }, 1000);
     }
   };
   let gameGrids = function () {
@@ -134,25 +166,6 @@ let gameBoard = (function () {
     displayContent: displayContent,
     clickDivs: gameGrids,
     endGame,
-  };
-})();
-let buttons = (function () {
-  const restart = function () {
-    document.getElementById("restart").addEventListener("click", () => {
-      gameBoard.endGame();
-      ScoreDisplay.xturn();
-    });
-  };
-  const start = function () {
-    document.getElementById("start").addEventListener("click", () => {
-      gameBoard.clickDivs();
-      ScoreDisplay.xturn();
-    });
-  };
-
-  return {
-    restart,
-    start,
   };
 })();
 
