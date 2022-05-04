@@ -33,33 +33,39 @@ let buttons = (function () {
   const addName = function () {
     let addBtn = document.getElementById("addName");
     addBtn.addEventListener("click", () => {
-      const body = document.querySelector("body");
-      const bkBackground = document.createElement("div");
-      bkBackground.classList.add("bkBackground");
-      const form = document.createElement("form");
-      let player1Name = document.createElement("input");
-      let name1 = document.createElement("label");
-      name1.textContent = "Player 1(X):";
-      name1.append(player1Name);
+      if (gameBoard.arrayEmt()) {
+        const body = document.querySelector("body");
+        const bkBackground = document.createElement("div");
+        bkBackground.classList.add("bkBackground");
+        const form = document.createElement("form");
+        let player1Name = document.createElement("input"); //console.log();
+        let name1 = document.createElement("label");
+        name1.textContent = "Player 1(X):";
+        name1.append(player1Name);
+        let player2Name = document.createElement("input");
+        let name2 = document.createElement("label");
+        name2.textContent = "Player 2(O):";
+        name2.append(player2Name);
+        const submit = document.createElement("button");
+        submit.textContent = "Submit";
+        form.append(name1, name2, submit);
+        bkBackground.appendChild(form);
+        body.appendChild(bkBackground);
+        submit.addEventListener("click", (e) => {
+          e.preventDefault();
 
-      let player2Name = document.createElement("input");
-      let name2 = document.createElement("label");
-      name2.textContent = "Player 2(O):";
-      name2.append(player2Name);
-      const submit = document.createElement("button");
-      submit.textContent = "Submit";
-      form.append(name1, name2, submit);
-      bkBackground.appendChild(form);
-      body.appendChild(bkBackground);
-      submit.addEventListener("click", (e) => {
-        e.preventDefault();
-        players.player1.name = player1Name.value;
-        players.player2.name = player2Name.value;
-        console.log(player1Name.value);
-        if ((player1Name.value = " ")) players.player1.name = "X";
-        if ((player1Name.value = " ")) players.player2.name = "O";
-        body.removeChild(bkBackground);
-      });
+          players.player1.name = player1Name.value;
+          players.player2.name = player2Name.value;
+
+          if (player1Name.value.length == 0) players.player1.name = "X";
+          if (player1Name.value.length == 0) players.player2.name = "O";
+          body.removeChild(bkBackground);
+
+          if (ScoreDisplay.divEmt != 0) ScoreDisplay.xturn();
+        });
+      } else {
+        alert("You need to restart game");
+      }
     });
   };
   return {
@@ -89,6 +95,7 @@ const ScoreDisplay = (function () {
     player1.textContent = "It's a tie ";
   };
   return {
+    divEmt: () => player1.textContent.length,
     xturn: turn1,
     oturn: turn2,
     gameEnd: gameEnd,
@@ -196,10 +203,13 @@ let gameBoard = (function () {
       })
     );
   };
+  const isnull = (x) => x == null;
+  let arrayEmt = () => grids.every(isnull);
   return {
     displayContent: displayContent,
     clickDivs: gameGrids,
     endGame,
+    arrayEmt: arrayEmt,
   };
 })();
 
