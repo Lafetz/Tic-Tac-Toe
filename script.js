@@ -1,3 +1,18 @@
+const players = (function () {
+  const player = function (name, score) {
+    return {
+      name: name,
+      score: score,
+    };
+  };
+  let player1 = player("abel", 0);
+  let player2 = player("nate", 0);
+  return {
+    player1,
+    player2,
+  };
+})();
+players.player1.name = "he";
 let buttons = (function () {
   const restart = function () {
     document.getElementById("restart").addEventListener("click", () => {
@@ -22,10 +37,10 @@ const ScoreDisplay = (function () {
   let player1 = document.querySelector(".turn1");
 
   const turn1 = function () {
-    player1.textContent = "X's turn";
+    player1.textContent = `${players.player1.name}'s turn`;
   };
   const turn2 = function () {
-    player1.textContent = "O's turn";
+    player1.textContent = `${players.player2.name}'s turn`;
   };
 
   const gameEnd = function () {
@@ -58,21 +73,6 @@ const disableScreen = (function () {
   return {
     add: add,
     remove: remove,
-  };
-})();
-
-const players = (function () {
-  const player = function (name, score) {
-    return {
-      name: name,
-      score: score,
-    };
-  };
-  let player1 = player("X", 0);
-  let player2 = player("O", 0);
-  return {
-    player1,
-    player2,
   };
 })();
 
@@ -115,12 +115,12 @@ let gameBoard = (function () {
       if (grids[a] != null && grids[a] === grids[b] && grids[a] === grids[c]) {
         const winner = () => {
           if (grids[a] == "X") {
-            ScoreDisplay.gamewinner("X");
+            ScoreDisplay.gamewinner(players.player1.name);
             disableScreen.add();
             setTimeout(disableScreen.remove, 1000);
             setTimeout(endGame, 1001);
           } else {
-            ScoreDisplay.gamewinner("O");
+            ScoreDisplay.gamewinner(players.player2.name);
             disableScreen.add();
             setTimeout(disableScreen.remove, 1000);
             setTimeout(endGame, 1001);
@@ -169,3 +169,4 @@ let gameBoard = (function () {
 
 buttons.start();
 buttons.restart();
+console.log(players.player1.name);
