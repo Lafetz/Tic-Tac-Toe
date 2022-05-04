@@ -5,14 +5,14 @@ const players = (function () {
       score: score,
     };
   };
-  let player1 = player("abel", 0);
-  let player2 = player("nate", 0);
+  let player1 = player("X", 0);
+  let player2 = player("O", 0);
   return {
     player1,
     player2,
   };
 })();
-players.player1.name = "he";
+
 let buttons = (function () {
   const restart = function () {
     document.getElementById("restart").addEventListener("click", () => {
@@ -21,15 +21,51 @@ let buttons = (function () {
     });
   };
   const start = function () {
-    document.getElementById("start").addEventListener("click", () => {
-      gameBoard.clickDivs();
-      ScoreDisplay.xturn();
+    document.getElementById("start").addEventListener(
+      "click",
+      () => {
+        gameBoard.clickDivs();
+        ScoreDisplay.xturn();
+      },
+      { once: true }
+    );
+  };
+  const addName = function () {
+    let addBtn = document.getElementById("addName");
+    addBtn.addEventListener("click", () => {
+      const body = document.querySelector("body");
+      const bkBackground = document.createElement("div");
+      bkBackground.classList.add("bkBackground");
+      const form = document.createElement("form");
+      let player1Name = document.createElement("input");
+      let name1 = document.createElement("label");
+      name1.textContent = "Player 1(X):";
+      name1.append(player1Name);
+
+      let player2Name = document.createElement("input");
+      let name2 = document.createElement("label");
+      name2.textContent = "Player 2(O):";
+      name2.append(player2Name);
+      const submit = document.createElement("button");
+      submit.textContent = "Submit";
+      form.append(name1, name2, submit);
+      bkBackground.appendChild(form);
+      body.appendChild(bkBackground);
+      submit.addEventListener("click", (e) => {
+        e.preventDefault();
+        players.player1.name = player1Name.value;
+        players.player2.name = player2Name.value;
+        console.log(player1Name.value);
+        if ((player1Name.value = " ")) players.player1.name = "X";
+        if ((player1Name.value = " ")) players.player2.name = "O";
+        body.removeChild(bkBackground);
+      });
     });
   };
-
   return {
     restart,
     start,
+    addName,
   };
 })();
 
@@ -169,4 +205,4 @@ let gameBoard = (function () {
 
 buttons.start();
 buttons.restart();
-console.log(players.player1.name);
+buttons.addName();
