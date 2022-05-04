@@ -58,7 +58,7 @@ let buttons = (function () {
           players.player2.name = player2Name.value;
 
           if (player1Name.value.length == 0) players.player1.name = "X";
-          if (player1Name.value.length == 0) players.player2.name = "O";
+          if (player2Name.value.length == 0) players.player2.name = "O";
           body.removeChild(bkBackground);
 
           if (ScoreDisplay.divEmt != 0) ScoreDisplay.xturn();
