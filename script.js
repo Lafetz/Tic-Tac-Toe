@@ -61,7 +61,7 @@ let buttons = (function () {
           if (player2Name.value.length == 0) players.player2.name = "O";
           body.removeChild(bkBackground);
 
-          if (ScoreDisplay.divEmt != 0) ScoreDisplay.xturn();
+          if (ScoreDisplay.divEmt() != 0) ScoreDisplay.xturn();
         });
       } else {
         alert("You need to restart game");
