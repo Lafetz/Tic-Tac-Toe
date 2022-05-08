@@ -153,6 +153,7 @@ let gameBoard = (function () {
     ScoreDisplay.xturn();
   };
   const GameWon = function () {
+    let notTie = true;
     for (const combination of gameGrid) {
       const [a, b, c] = combination;
       if (grids[a] != null && grids[a] === grids[b] && grids[a] === grids[c]) {
@@ -162,18 +163,20 @@ let gameBoard = (function () {
             disableScreen.add();
             setTimeout(disableScreen.remove, 1000);
             setTimeout(endGame, 1001);
+            notTie = false;
           } else {
             ScoreDisplay.gamewinner(players.player2.name);
             disableScreen.add();
             setTimeout(disableScreen.remove, 1000);
             setTimeout(endGame, 1001);
+            notTie = false;
           }
         };
         winner();
       }
     }
     const notNull = (x) => x != null;
-    if (grids.every(notNull)) {
+    if (grids.every(notNull) && notTie) {
       ScoreDisplay.tie();
       setTimeout(() => {
         gameBoard.endGame();
